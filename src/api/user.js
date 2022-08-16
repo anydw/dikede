@@ -1,24 +1,26 @@
 import request from '@/utils/request'
 
+/**
+ *
+ * @param {*} data 登录
+ * @returns
+ */
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: '/user-service/user/login',
     method: 'post',
     data
   })
 }
 
-export function getInfo(token) {
+/**
+ *
+ * @param {*} randernum 验证码
+ * @returns
+ */
+export const yzmApi = (randernum) => {
   return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
-  })
-}
-
-export function logout() {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    url: `/user-service/user/imageCode/${randernum}`,
+    responseType: 'arraybuffer'
   })
 }
