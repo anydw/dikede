@@ -41,6 +41,7 @@ export default {
 
 <style scoped lang="scss">
 .navbar {
+  z-index: 999;
    .rightBox{
     height: 100%;
     line-height: 60px;

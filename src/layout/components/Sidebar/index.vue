@@ -3,31 +3,32 @@
     <el-row class="tac">
       <el-col :span="12">
         <el-menu
-          default-active="2"
-          class="el-menu-vertical-demo"
+          :style="{
+            height: '600px',
+            overflowX: 'hidden',
+            overflowY: 'auto',
+          }"
+          class="
+          el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b"
           @open="handleOpen"
           @close="handleClose"
         >
+          <el-menu-item index="2">
+            <i class="el-icon-menu" />
+            <span slot="title">帝可得</span>
+          </el-menu-item>
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location" />
               <span>工单管理</span>
             </template>
             <el-menu-item-group>
-              <template slot="title">分组一</template>
               <el-menu-item index="1-1">选项1</el-menu-item>
               <el-menu-item index="1-2">选项2</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
@@ -35,17 +36,9 @@
               <span>点位管理</span>
             </template>
             <el-menu-item-group>
-              <template slot="title">分组一</template>
               <el-menu-item index="1-1">选项1</el-menu-item>
               <el-menu-item index="1-2">选项2</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
@@ -57,13 +50,6 @@
               <el-menu-item index="1-1">选项1</el-menu-item>
               <el-menu-item index="1-2">选项2</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
@@ -71,17 +57,9 @@
               <span>人员管理</span>
             </template>
             <el-menu-item-group>
-              <template slot="title">分组一</template>
               <el-menu-item index="1-1">选项1</el-menu-item>
               <el-menu-item index="1-2">选项2</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
           </el-submenu>
           <el-submenu index="5">
             <template slot="title">
@@ -89,17 +67,9 @@
               <span>商品管理</span>
             </template>
             <el-menu-item-group>
-              <template slot="title">分组一</template>
               <el-menu-item index="1-1">选项1</el-menu-item>
               <el-menu-item index="1-2">选项2</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
           </el-submenu>
           <el-submenu index="6">
             <template slot="title">
@@ -107,17 +77,9 @@
               <span>策略管理</span>
             </template>
             <el-menu-item-group>
-              <template slot="title">分组一</template>
               <el-menu-item index="1-1">选项1</el-menu-item>
               <el-menu-item index="1-2">选项2</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
           </el-submenu>
           <el-submenu index="7">
             <template slot="title">
@@ -125,17 +87,9 @@
               <span>订单管理</span>
             </template>
             <el-menu-item-group>
-              <template slot="title">分组一</template>
               <el-menu-item index="1-1">选项1</el-menu-item>
               <el-menu-item index="1-2">选项2</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
           </el-submenu>
           <el-submenu index="8">
             <template slot="title">
@@ -143,22 +97,10 @@
               <span>对账统计</span>
             </template>
             <el-menu-item-group>
-              <template slot="title">分组一</template>
               <el-menu-item index="1-1">选项1</el-menu-item>
               <el-menu-item index="1-2">选项2</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
           </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-menu" />
-            <span slot="title">导航二</span>
-          </el-menu-item>
 
         </el-menu>
       </el-col>
@@ -179,11 +121,19 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+ ::-webkit-scrollbar {
+     width: 0 !important;
+   }
+   ::-webkit-scrollbar {
+     width: 0 !important;height: 0;
+   }
 .bigbox{
     position: relative;
     width: 350px;
 .tac {
-    position: absolute;
+
+    position: fixed;
+    // background-color: #fff;
     top: 52px;
     left: -30px;
     height: 56px;
@@ -202,7 +152,12 @@ export default {
     .el-menu-vertical-demo{
       width: 167px;
     }
+
     }
 }
+     ::v-deep.el-submenu .el-menu-item{
+      min-width: 0;
+      background-color: #fff;
+     }
 
 </style>
