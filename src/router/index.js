@@ -30,6 +30,62 @@ export const constantRoutes = [
       {
         path: '/taskoperation',
         component: () => import('@/views/taskoperation')
+      },
+      {
+        path: '/noderegion',
+        component: () => import('@/views/noderegion')
+      },
+      {
+        path: '/nodenode',
+        component: () => import('@/views/nodenode')
+      },
+      {
+        path: '/nodepartner',
+        component: () => import('@/views/nodepartner')
+      },
+      {
+        path: '/vmindex',
+        component: () => import('@/views/vmindex')
+      },
+      {
+        path: '/vmstatus',
+        component: () => import('@/views/vmstatus')
+      },
+      {
+        path: '/vmtype',
+        component: () => import('@/views/vmtype')
+      },
+      {
+        path: '/userindex',
+        component: () => import('@/views/userindex')
+      },
+      {
+        path: '/useruser-task-stats',
+        component: () => import('@/views/useruser-task-stats')
+      },
+      {
+        path: '/user-work',
+        component: () => import('@/views/user-work')
+      },
+      {
+        path: '/sku-class',
+        component: () => import('@/views/sku-class')
+      },
+      {
+        path: '/sku-sku',
+        component: () => import('@/views/sku-sku')
+      },
+      {
+        path: '/policyindex',
+        component: () => import('@/views/policyindex')
+      },
+      {
+        path: '/orderindex',
+        component: () => import('@/views/orderindex')
+      },
+      {
+        path: '/reportindex',
+        component: () => import('@/views/reportindex')
       }
 
     ]

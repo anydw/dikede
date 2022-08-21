@@ -1,6 +1,6 @@
 <template>
   <div class="main_container_box">
-    运维工单
+    设备管理
   </div>
 </template>
 

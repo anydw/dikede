@@ -1,6 +1,6 @@
 <template>
   <div class="main_container_box">
-    运维工单
+    合作商管理
   </div>
 </template>
 

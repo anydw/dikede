@@ -7,6 +7,9 @@ const whiteList = ['/login', '/404']
 router.beforeEach(async(to, from, next) => {
   // 判断有没有token
   if (store.getters.token) {
+    if (store.getters.userName) {
+      await store.dispatch('user/getUserInfo')
+    }
     if (store.getters.userId) {
       await store.dispatch('user/getUserInfo')
     }
