@@ -5,7 +5,7 @@
       <div><img class="logo" src="@/assets/common/left.png" alt=""></div>
       <div class="rightBox">
         <img class="HeadPortraits" src="@/assets/common/logo.png" alt="">
-        <span class="userName">欢迎您:{{}}</span>
+        <span class="userName">欢迎您:{{ username }}</span>
         <!-- 下拉菜单 -->
         <el-dropdown>
           <span class="el-dropdown-link">
@@ -13,7 +13,7 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>用户</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -26,14 +26,25 @@
 </template>
 <script>
 import SideBar from './components/SideBar'
+import { mapGetters } from 'vuex'
 export default {
-  name: 'Home',
+  name: 'Layout',
   components: {
     SideBar
   },
   data() {
     return {
-
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'username'
+    ])
+  },
+  methods: {
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login`)
     }
   }
 }

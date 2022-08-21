@@ -15,12 +15,23 @@ export function login(data) {
 
 /**
  *
- * @param {*} randernum 验证码
+ * @param {*} randernum 图片验证码
  * @returns
  */
-export const yzmApi = (randernum) => {
+export function yzmApi(randernum) {
   return request({
     url: `/user-service/user/imageCode/${randernum}`,
-    responseType: 'arraybuffer'
+    responseType: 'blob'
+  })
+}
+
+/**
+ *
+ * @param {*} id 用户基本信息
+ * @returns
+ */
+export function getUserInfo(id) {
+  return request({
+    url: `/user-service/user/${id}`
   })
 }

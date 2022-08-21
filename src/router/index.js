@@ -9,6 +9,12 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+  },
+
+  {
     path: '/',
     component: () => import('@/layout/index'),
     redirect: '/home',
@@ -16,12 +22,23 @@ export const constantRoutes = [
       {
         path: 'home',
         component: () => import('@/views/Home/index')
+      },
+      {
+        path: '/task',
+        component: () => import('@/views/task/business'),
+        children: [
+          {
+            path: 'operation',
+            component: () => import('@/views/task/operation')
+          }
+        ]
       }
+
     ]
   }
+
 ]
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

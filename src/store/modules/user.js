@@ -1,48 +1,67 @@
-import { login, yzmApi } from '@/api/user'
+import { login, getUserInfo } from '@/api/user'
+import { getToken, removeToken, setToken } from '@/utils/auth'
 export default {
   namespaced: true,
   state: {
-    token: null,
-    code: '',
-    yanZhenMa: ''
+    token: getToken(),
+    hrsaasTime: '',
+    userInfo: {},
+    userId: ''
   },
   mutations: {
+    // 获取token
     setToken(state, token) {
       state.token = token
+      setToken(token)
     },
-    getcode(state, code) {
-      state.code = code
+    // 设置用户信息
+    setUserInfo(state, userInfo) {
+      state.userInfo = JSON.parse(JSON.stringify(userInfo))
     },
-    setyanZhenMa(state, yanZhenMa) {
-      state.yanZhenMa = yanZhenMa
+    // 移除token
+    removeToken(state) {
+      state.token = null
+      removeToken()
+    },
+    // 清空用户信息
+    removeUserInfo(state) {
+      state.userInfo = {}
+    },
+    // 存储时间戳
+    sethrsaasTime(state, time) {
+      state.hrsaasTime = time
+    },
+    // 保存userId
+    setUserId(state, userId) {
+      state.userId = userId
     }
+
   },
   actions: {
+    // 登录
     async login({ commit }, data) {
       const res = await login(data)
-      console.log(res)
+      // 获取登录的时间戳
+      commit('sethrsaasTime', +new Date())
       // 提交保存token
       commit('setToken', res.data.token)
+      commit('setUserId', res.data.userId)
+      console.log(res, 111)
+      console.log(res.data.userId)
     },
-    // 获取图形验证码
-    async getyanZhenMa({ commit }, payload) {
-      const len = 32
-      const chars = 'ABCDEFGHIJKLMNOPQRSTWXYZabcdefhijkmnprstwxyz2345678'
-      const maxPos = chars.length
-      let character = ''
-      for (let i = 0; i < len; i++) {
-        character += chars.charAt(Math.floor(Math.random() * maxPos))
-      }
-      commit('getcode', character)
-      const res = await yzmApi(character)
+    // 获取用户信息
+    async getUserInfo({ commit, state }) {
+      const res = await getUserInfo(state.userId)
+      commit('setUserInfo', res)
       console.log(res)
-      if (res.status === 200) {
-        const imgurl = 'data:image/png;base64,' + btoa(
-          new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
-        )
-        commit('setyanZhenMa', imgurl)
-      }
+    },
+
+    // 登出页面
+    logout({ commit }) {
+      commit('removeToken')
+      commit('removeUserInfo')
     }
+
   }
 }
 

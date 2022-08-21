@@ -28,9 +28,9 @@
           <el-input v-model="loginForm.securityCode" placeholder="请输入验证码" />
           <img
             class="yanzheng"
-            :src="this.$store.state.user.yanZhenMa"
+            :src="imgUrl"
             alt=""
-            @click="changeYzm"
+            @click="getCodeImg"
           >
         </el-form-item>
         <el-button type="primary" style="width:100%;margin-bottom:30px;" @click="login">登录</el-button>
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { yzmApi } from '@/api/user'
 export default {
   name: 'Login',
   data() {
@@ -47,7 +48,8 @@ export default {
       loginForm: {
         userName: 'admin',
         password: 'admin',
-        securityCode: ''
+        securityCode: '',
+        clientToken: ''
       },
       // 是否显示密码
       tyepassword: 'password',
@@ -59,11 +61,12 @@ export default {
           {	min: 5, max: 16, message: '密码的长度在5-16位之间 ', trigger: 'blur' }],
         securityCode: [{ required: true, message: '验证码不正确', trigger: 'blur', pattern: /^[a-zA-Z0-9_-]{4}$/ }
         ]
-      }
+      },
+      imgUrl: ''
     }
   },
   created() {
-    this.$store.dispatch('user/getyanZhenMa')
+    this.getCodeImg()
   },
   methods: {
     // 改变密码框的隐藏和显示状态
@@ -75,23 +78,26 @@ export default {
       }
       )
     },
-    // 点击切换验证码
-    changeYzm() {
-      console.log(this.loginForm.securityCode)
-      this.$store.dispatch('user/getyanZhenMa')
+    // 获取图片验证码
+    async getCodeImg() {
+      const random = Math.random()
+      this.loginForm.clientToken = random
+      const res = await yzmApi(random)
+      // console.log(res)
+      this.imgUrl = window.URL.createObjectURL(res.data)
     },
     // 登录
     async login() {
-      if (this.loginForm.securityCode === !this.loginForm.securityCode) {
-        return alert('Please enter a security code')
-      }
+      // if (this.loginForm.securityCode === !this.loginForm.securityCode) {
+      //   return alert('Please enter a security code')
+      // }
       await this.$refs.loginForm.validate()
-      this.$store.dispatch('user/login', {
+      await this.$store.dispatch('user/login', {
         loginName: this.loginForm.userName,
         password: this.loginForm.password,
-        mobile: this.loginForm.userName,
+        mobile: '',
         code: this.loginForm.securityCode,
-        clientToken: this.$store.state.user.code,
+        clientToken: this.loginForm.clientToken,
         loginType: 0
       })
       this.$router.push('/')

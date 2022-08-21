@@ -14,7 +14,16 @@ const store = new Vuex.Store({
     user
   },
   // 数据保存持久化
-  plugins: [createPersistedState({})],
+  plugins: [createPersistedState({
+    reducer(state) {
+      return {
+        user: {
+          hrsaasTime: state.user.hrsaasTime,
+          userId: state.user.userId
+        }
+      }
+    }
+  })],
   getters
 })
 
