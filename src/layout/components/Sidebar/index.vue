@@ -26,8 +26,8 @@
               <span>工单管理</span>
             </template>
             <el-menu-item-group>
-              <router-link to="/task"><el-menu-item index="1-1">运营工单</el-menu-item></router-link>
-              <router-link to="/task"><el-menu-item index="1-2">运维工单</el-menu-item></router-link>
+              <router-link to="/taskbusiness"><el-menu-item index="1-1">运营工单</el-menu-item></router-link>
+              <router-link to="/taskoperation"><el-menu-item index="1-2">运维工单</el-menu-item></router-link>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">

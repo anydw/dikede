@@ -24,14 +24,12 @@ export const constantRoutes = [
         component: () => import('@/views/Home/index')
       },
       {
-        path: '/task',
-        component: () => import('@/views/task/business'),
-        children: [
-          {
-            path: 'operation',
-            component: () => import('@/views/task/operation')
-          }
-        ]
+        path: '/taskbusiness',
+        component: () => import('@/views/taskbusiness')
+      },
+      {
+        path: '/taskoperation',
+        component: () => import('@/views/taskoperation')
       }
 
     ]
