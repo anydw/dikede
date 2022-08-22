@@ -15,7 +15,7 @@ export default {
     position: absolute;
     top: 60px;
     left: 165px;
-    width:1169px;
+    width:1184px;
     height: 757px;
     background-color: #eee;
   }
