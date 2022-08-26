@@ -17,6 +17,13 @@ import '@/icons' // icon
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
 
+import * as filters from '@/api/filters' // 引入工具类
+// 注册全局的过滤器
+Object.keys(filters).forEach(key => {
+  // 注册过滤器
+  Vue.filter(key, filters[key])
+})
+
 Vue.config.productionTip = false
 
 new Vue({

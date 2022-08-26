@@ -2,12 +2,16 @@
   <div class="main-container_search">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
       <el-form-item label="工单编号">
-        <el-input v-model="formInline.user" placeholder="请输入" />
+        <el-input v-model="formInline.user" placeholder="请输入" clearable />
       </el-form-item>
       <el-form-item label="工单状态">
-        <el-select v-model="formInline.region" placeholder="请选择">
-          <el-option label="区域一" value="shanghai" />
-          <el-option label="区域二" value="beijing" />
+        <el-select v-model="formInline.region" placeholder="请选择" clearable>
+          <el-option
+            v-for="item in allStatus"
+            :key="item.statusId"
+            :label="item.statusName"
+            :value="item.statusId"
+          />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -20,6 +24,16 @@
 <script>
 export default {
   name: 'Search',
+  props: {
+    allStatus: {
+      type: Array,
+      default: () => ([])
+    },
+    orderList: {
+      type: Array,
+      default: () => ([])
+    }
+  },
   data() {
     return {
       formInline: {
@@ -29,8 +43,18 @@ export default {
     }
   },
   methods: {
+    // 查找用户
     onSubmit() {
-      console.log('submit!')
+      // console.log(this.formInline.region)
+      // const nowId = this.formInline.region
+
+      // console.log(this.orderList[0].taskStatusTypeEntity.statusId)
+      // this.orderList.map(ele =>ele.taskStatusTypeEntity.statusId === !this.formInline.region{
+      //   return
+      // })
+      // if (nowId === this.orderList[0].taskStatusTypeEntity.statusId) {
+      //   this.$emit('getTaskOrder',)
+      // }
     }
   }
 }

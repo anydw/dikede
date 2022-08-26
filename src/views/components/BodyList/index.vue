@@ -32,12 +32,17 @@
           width="130"
         />
         <el-table-column
-          prop="shoudong"
+          prop="createType"
+          s
           label="工单方式"
           width="130"
-        />
+        >
+          <template slot-scope="scope">
+            {{ (scope.row.createType===1)?'手动':'自动' }}
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="taskStatusTypeEntity"
+          prop="taskStatusTypeEntity.statusName"
           label="工单状态"
           width="130"
         />
@@ -50,7 +55,11 @@
           prop="createTime"
           label="创建日期"
           width="160"
-        />
+        >
+          <template slot-scope="scope">
+            {{ scope.row.createTime |formatDate }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="name"
           label="操作"

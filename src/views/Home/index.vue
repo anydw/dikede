@@ -10,19 +10,19 @@
           </div>
           <div class="title_statistics">
             <div>
-              <p>1</p>
+              <p>{{ totalList[0]+totalList[1] }}</p>
               <p class="title_text">工单总数（个）</p>
             </div>
             <div>
-              <p>2</p>
+              <p>{{ completedTotalList[0]+completedTotalList[1] }}</p>
               <p class="title_text">完成工单（个）</p>
             </div>
             <div>
-              <p>3</p>
+              <p>{{ progressTotalList[0]+progressTotalList[1] }}</p>
               <p class="title_text">进行工单（个）</p>
             </div>
             <div>
-              <p>4</p>
+              <p>{{ cancelTotalList[0]+cancelTotalList[1] }}</p>
               <p class="title_text">取消工单（个）</p>
             </div>
 
@@ -35,11 +35,11 @@
           </div>
           <div class="title_statistics">
             <div>
-              <p>1</p>
+              <p>{{ orderQuantity }}</p>
               <p class="title_text">订单量（个）</p>
             </div>
             <div>
-              <p>2</p>
+              <p>{{ orderSale }}</p>
               <p class="title_text">销售额（万元）</p>
             </div>
           </div>
@@ -62,6 +62,21 @@
         <div class="title">
           <h3>销售数据</h3>
           <span>{{ start }}~{{ end }}</span>
+        </div>
+        <div class="week_month_year">
+          <span :style="isActive=='周'?style:''" @click="changeStyle">周</span>
+          <span :style="isActive=='月'?style:''" @click="changeStyle">月</span>
+          <span :style="isActive=='年'?style:''" @click="changeStyle">年</span>
+        </div>
+        <div class="main_container_left_bottom">
+          <!-- 左 -->
+          <div class="echarts_left">
+            <DataRelationDisplay />
+          </div>
+          <!-- 右 -->
+          <div class="echarts_right">
+            456
+          </div>
         </div>
       </div>
     </div>
@@ -87,20 +102,35 @@
 </template>
 
 <script>
-import { getGoodsTop, getWorkOrder } from '@/api'
+import DataRelationDisplay from './components/DataRelationDisplay'
+import dayjs from 'dayjs'
+import { getGoodsTop, getOrderSize, getSale, getRepairOrder } from '@/api'
 export default {
   name: 'Home',
+  components: {
+    DataRelationDisplay
+  },
   data() {
     return {
-      start: '2022-08-01',
-      end: '2022-08-21',
+      start: dayjs(this.chooseMonth).startOf('month').format('YYYY-MM-DD'), // 当月开始第一天
+      end: dayjs(`${new Date()}`).format('YYYY-MM-DD'), // 当月实际天数
       topValue: 10,
-      topList: []
+      topList: [], // 商品榜单数据
+      orderQuantity: '', // 订单数量
+      orderSale: '', // 销售额
+      totalList: [], // 工单总数
+      completedTotalList: [], // 完成工单
+      progressTotalList: [], // 进行工单
+      cancelTotalList: [], // 取消工单
+      isActive: ''
+
     }
   },
   created() {
     this.getGoodsTop()
-    this.getWorkOrder()
+    this.getOrderSize()
+    this.getSale()
+    this.getRepairOrder()
   },
   methods: {
     // 销售前几的数据-商品热榜
@@ -114,15 +144,39 @@ export default {
       // console.log(res)
       this.topList = res.data
     },
-    // 获取工单统计
-    async getWorkOrder() {
-      const work = {
-        start: this.start,
-        end: this.end
-      }
-      const res = await getWorkOrder(work)
-      console.log(res)
+    // 销售订单数量统计
+    async getOrderSize() {
+      const start = dayjs(this.chooseMonth).startOf('month').format('YYYY-MM-DD HH:mm:ss')
+      const end = dayjs(`${new Date()}`).format('YYYY-MM-DD HH:mm:ss')
+      // console.log(start)
+      const res = await getOrderSize({ start, end })
+      // console.log(res.data)
+      this.orderQuantity = res.data
+    },
+    // 销售额统计
+    async getSale() {
+      const start = dayjs(this.chooseMonth).startOf('month').format('YYYY-MM-DD HH:mm:ss')
+      const end = dayjs(`${new Date()}`).format('YYYY-MM-DD HH:mm:ss')
+      const res = await getSale({ start, end })
+      // console.log(res)
+      this.orderSale = (res.data / 1000000).toFixed(2)
+    },
+    // 工单统计
+    async getRepairOrder() {
+      const start = dayjs(this.chooseMonth).startOf('month').format('YYYY-MM-DD HH:mm:ss')
+      const end = dayjs(`${new Date()}`).format('YYYY-MM-DD HH:mm:ss')
+      const { data } = await getRepairOrder({ start, end })
+      // console.log(data)
+      this.totalList = data.map(val => val.total)
+      this.completedTotalList = data.map(val => val.completedTotal)
+      this.cancelTotalList = data.map(val => val.cancelTotal)
+      this.progressTotalList = data.map(val => val.progressTotal)
+      // console.log(this.totalList, 1111)
+    },
+    changeStyle(event) {
+      this.isActive = event.target.innerText
     }
+
   }
 }
 </script>
@@ -292,12 +346,13 @@ export default {
       }
     }
     .main_container_left{
+      // display: flex;
       position: absolute;
       top: 195px;
       left: 10px;
       width: 850px;
       height: 352px;
-      background-color: green;
+      background-color:#fff;
        border-radius: 15px;
         .title{
           display: flex;
@@ -313,6 +368,48 @@ export default {
             color: #999999
           };
         }
+        .week_month_year{
+          position: absolute;
+          top: 18px;
+          right: 14px;
+          display: flex;
+          justify-content: space-around;
+          background: rgba(233,243,255,.37);
+          width: 130px;
+          height: 34px;
+          line-height: 34px;
+          border-radius: 10px;
+          padding: 5px 0;
+         span{
+          // padding-top: 5px;
+          width: 35px;
+           height: 25px;
+           background-color: #fff;
+           font-size: 14px;
+           font-weight: 700;
+           color: #000;
+           cursor: pointer;
+           text-align: center;
+           line-height: 25px;
+           border-radius: 10px;
+           box-shadow: 1px 1px  #eee;
+         }
+        }
+        .main_container_left_bottom{
+          display: flex;
+          padding: 0 15px;
+          .echarts_left{
+            background-color: #fff;
+            width: 412px;
+            height: 278px;
+          }
+          .echarts_right{
+            // background-color:pink;
+            width: 412px;
+            height: 278px;
+          }
+        }
+
     }
     .main_bottom{
       background-color: #eee;

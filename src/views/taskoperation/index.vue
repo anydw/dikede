@@ -1,6 +1,6 @@
 <template>
   <div class="main_container_box">
-    <Search />
+    <Search :all-status="allStatus" :order-list="orderList"/>
     <BodyList :order-list="orderList" />
   </div>
 </template>
@@ -8,7 +8,7 @@
 <script>
 import Search from '../components/Search'
 import BodyList from '../components/BodyList'
-import { getTaskOrder } from '@/api'
+import { getTaskOrder, getTaskStatus } from '@/api'
 export default {
   components: {
     Search,
@@ -16,18 +16,28 @@ export default {
   },
   data() {
     return {
-      orderList: []
+      orderList: [],
+      allStatus: []
     }
   },
   created() {
     this.getTaskOrder()
+    this.getTaskStatus()
   },
   methods: {
+    // 获取工单列表
     async getTaskOrder() {
       const res = await getTaskOrder()
-      console.log(res)
+      // console.log(res)
       this.orderList = res.data.currentPageRecords
-      console.log(this.orderList)
+      console.log(this.orderList, 111)
+    },
+    // 获取工单状态
+    async getTaskStatus() {
+      const { data } = await getTaskStatus()
+      // console.log(data)
+      this.allStatus = data
+      // console.log(this.allStatus)
     }
   }
 }

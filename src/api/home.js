@@ -17,15 +17,26 @@ export function getGoodsTop({ topValue, start, end }) {
 }
 
 /**
- *
- * @param {*} 获取销售额统计
+ * 获取销售订单数量统计
  * @returns pormise
  */
-export function getSale({ collectType, start, end }) {
+export function getOrderSize({ start, end }) {
   return request({
-    url: `/order-service/report/amountCollect/${collectType}/${start}/${end}`,
+    url: '/order-service/report/orderCount',
     params: {
-      collectType,
+      start,
+      end
+    }
+  })
+}
+/**
+ * 获取销售额统计
+ * @returns pormise
+ */
+export function getSale({ start, end }) {
+  return request({
+    url: '/order-service/report/orderAmount',
+    params: {
       start,
       end
     }
@@ -33,10 +44,10 @@ export function getSale({ collectType, start, end }) {
 }
 
 /**
- * 获取工单统计汇总信息
+ * 获取工单统计
  * @returns pormise
  */
-export function getWorkOrder({ start, end }) {
+export function getRepairOrder({ start, end }) {
   return request({
     url: `/task-service/task/taskReportInfo/${start}/${end}`,
     params: {
