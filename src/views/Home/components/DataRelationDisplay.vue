@@ -5,13 +5,32 @@
 <script>
 import * as echarts from 'echarts'
 export default {
+  name: 'DataRelationDisplay',
+  props: {
+    mouthList: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  data() {
+    return {
+      mouthSeriesList: []
+    }
+  },
+  watch: {
+    mouthList(news, olds) {
+      console.log(news, olds, 'nihao')
+      const { series, xAxis } = news
+      this.mouthSeriesList = series
+      console.log(series)
+    }
+  },
   mounted() {
     this.newEcharte()
   },
   methods: {
     newEcharte() {
       const myChart = echarts.init(document.getElementById('main'))
-
       const option = {
         // 标题
         title: {
@@ -39,9 +58,16 @@ export default {
         ],
         xAxis: {
           type: 'category',
-          data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期天'],
+          // data: this.mouthxAxisList,
           // 默认两侧显示空白
-          boundaryGap: false
+          boundaryGap: false,
+          axisLabel: {
+            interale: 0,
+            formatter(value) {
+              var mouth = new Date(value)
+              return [`${mouth.getMonth() + 1}月${mouth.getDate()}日`]
+            }
+          }
         },
         yAxis: {
           type: 'value',

@@ -1,16 +1,17 @@
 <template>
-  <div id="main" />
+  <div id="mains" />
 </template>
 
 <script>
 import * as echarts from 'echarts'
 export default {
+  name: 'BarGraphDisplay',
   mounted() {
-    this.newEcharte()
+    this.newEscharte()
   },
   methods: {
-    newEcharte() {
-      const myChart = echarts.init(document.getElementById('main'))
+    newEscharte() {
+      const myChart = echarts.init(document.getElementById('mains'))
 
       const option = {
         // 标题
@@ -34,14 +35,13 @@ export default {
         series: [
           {
             data: [1000, 2000, 3000, 4000, 5000],
-            type: 'line'
+            type: 'bar',
+            barWidth: 15
           }
         ],
         xAxis: {
           type: 'category',
-          data: ['星期一', '星期二', '星期三', '星期四', '星期五'],
-          // 默认两侧显示空白
-          boundaryGap: false
+          data: ['星期一', '星期二', '星期三']
         },
         yAxis: {
           type: 'value',
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  #main{
+  #mains{
     width: 412px;
     height: 278px;
   }

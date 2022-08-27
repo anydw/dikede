@@ -64,18 +64,21 @@
           <span>{{ start }}~{{ end }}</span>
         </div>
         <div class="week_month_year">
-          <span :style="isActive=='周'?style:''" @click="changeStyle">周</span>
-          <span :style="isActive=='月'?style:''" @click="changeStyle">月</span>
-          <span :style="isActive=='年'?style:''" @click="changeStyle">年</span>
+          <span :class="{active:cur==1}" class="span_change" @click="changeStyleWeek">周</span>
+          <span :class="{active:cur==2}" class="span_change" @click="changeStyleMouth">月</span>
+          <span :class="{active:cur==3}" class="span_change" @click="changeStyleYear">年</span>
         </div>
         <div class="main_container_left_bottom">
           <!-- 左 -->
           <div class="echarts_left">
-            <DataRelationDisplay />
+            <DataRelationDisplay
+              v-if="mouthList !=''"
+              :mouth-list="mouthList"
+            />
           </div>
           <!-- 右 -->
           <div class="echarts_right">
-            456
+            <BarGraphDisplay />
           </div>
         </div>
       </div>
@@ -102,19 +105,21 @@
 </template>
 
 <script>
+import BarGraphDisplay from './components/BarGraphDisplay'
 import DataRelationDisplay from './components/DataRelationDisplay'
 import dayjs from 'dayjs'
-import { getGoodsTop, getOrderSize, getSale, getRepairOrder } from '@/api'
+import { getGoodsTop, getOrderSize, getSale, getRepairOrder, getLineChart } from '@/api'
 export default {
   name: 'Home',
   components: {
-    DataRelationDisplay
+    DataRelationDisplay,
+    BarGraphDisplay
   },
   data() {
     return {
       start: dayjs(this.chooseMonth).startOf('month').format('YYYY-MM-DD'), // 当月开始第一天
       end: dayjs(`${new Date()}`).format('YYYY-MM-DD'), // 当月实际天数
-      topValue: 10,
+      topValue: 10, // 销售额前十榜单
       topList: [], // 商品榜单数据
       orderQuantity: '', // 订单数量
       orderSale: '', // 销售额
@@ -122,7 +127,8 @@ export default {
       completedTotalList: [], // 完成工单
       progressTotalList: [], // 进行工单
       cancelTotalList: [], // 取消工单
-      isActive: ''
+      cur: 1, // 样式初始值
+      mouthList: {}
 
     }
   },
@@ -131,6 +137,7 @@ export default {
     this.getOrderSize()
     this.getSale()
     this.getRepairOrder()
+    this.getLineChart()
   },
   methods: {
     // 销售前几的数据-商品热榜
@@ -173,10 +180,34 @@ export default {
       this.progressTotalList = data.map(val => val.progressTotal)
       // console.log(this.totalList, 1111)
     },
-    changeStyle(event) {
-      this.isActive = event.target.innerText
+    // 销售额折线图数据统计
+    async getLineChart() {
+      const tse = {
+        start: this.start,
+        end: this.end,
+        collectType: 1
+      }
+      const res = await getLineChart(tse)
+      console.log(res)
+      this.mouthList = res.data
+      console.log(res.data, 111111)
+    },
+    async changeStyleWeek() {
+      this.cur = 1
+    },
+    async changeStyleMouth() {
+      const tse = {
+        start: this.start,
+        end: this.end,
+        collectType: 2
+      }
+      const res = await getLineChart(tse)
+      console.log(res)
+      this.cur = 2
+    },
+    changeStyleYear() {
+      this.cur = 3
     }
-
   }
 }
 </script>
@@ -368,6 +399,12 @@ export default {
             color: #999999
           };
         }
+        .active{
+          font-weight: 700;
+           color: #000;
+           box-shadow: 1px 1px  #eee;
+           background-color: #fff;
+        }
         .week_month_year{
           position: absolute;
           top: 18px;
@@ -380,19 +417,15 @@ export default {
           line-height: 34px;
           border-radius: 10px;
           padding: 5px 0;
-         span{
-          // padding-top: 5px;
+         .span_change{
           width: 35px;
            height: 25px;
-           background-color: #fff;
            font-size: 14px;
-           font-weight: 700;
-           color: #000;
            cursor: pointer;
            text-align: center;
            line-height: 25px;
-           border-radius: 10px;
-           box-shadow: 1px 1px  #eee;
+           border-radius: 7px;
+
          }
         }
         .main_container_left_bottom{

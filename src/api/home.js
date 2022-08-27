@@ -57,3 +57,19 @@ export function getRepairOrder({ start, end }) {
   })
 }
 
+/**
+ *
+ * @param {*}  获取销售额折线图数据统计
+ * @returns pormise
+ */
+export function getLineChart({ collectType, start, end }) {
+  return request({
+    url: `/order-service/report/amountCollect/${collectType}/${start}/${end}`,
+    params: {
+      collectType,
+      start,
+      end
+    }
+  })
+}
+
