@@ -10,23 +10,38 @@ export default {
     mouthList: {
       type: Object,
       default: () => ({})
+    },
+    weekList: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
     return {
-      mouthSeriesList: []
+      mouthSeriesList: [],
+      mouthXaxisList: []
     }
   },
   watch: {
-    mouthList(news, olds) {
-      console.log(news, olds, 'nihao')
-      const { series, xAxis } = news
-      this.mouthSeriesList = series
-      console.log(series)
-    }
+    mouthList: {
+      handler(news, olds) {
+        // console.log(news, olds, 'nihao')
+        this.mouthSeriesList = news.series
+        this.mouthXaxisList = news.xAxis
+      }
+    },
+    weekList: {
+      handler(news, olds) {
+        console.log(news, 1111)
+      }
+    },
+    deep: true
+
   },
   mounted() {
-    this.newEcharte()
+    setTimeout(() => {
+      this.newEcharte()
+    }, 500)
   },
   methods: {
     newEcharte() {
@@ -52,13 +67,17 @@ export default {
         },
         series: [
           {
-            data: [1000, 2000, 3000, 4000, 5000],
+            data: this.mouthSeriesList,
             type: 'line'
           }
         ],
+        grid: {
+          left: '18%',
+          bottom: '10%'
+        },
         xAxis: {
           type: 'category',
-          // data: this.mouthxAxisList,
+          data: this.mouthXaxisList,
           // 默认两侧显示空白
           boundaryGap: false,
           axisLabel: {
@@ -73,10 +92,10 @@ export default {
           type: 'value',
           name: '单位：元'
         }
-
       }
       myChart.setOption(option)
     }
+
   }
 }
 </script>

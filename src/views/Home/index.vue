@@ -74,6 +74,7 @@
             <DataRelationDisplay
               v-if="mouthList !=''"
               :mouth-list="mouthList"
+              :week-list="weekList"
             />
           </div>
           <!-- 右 -->
@@ -128,11 +129,29 @@ export default {
       progressTotalList: [], // 进行工单
       cancelTotalList: [], // 取消工单
       cur: 1, // 样式初始值
-      mouthList: {}
-
+      weekList: {}, // 周时间
+      mouthList: {}, // 月时间
+      // 获取前七天的函数
+      fn() {
+        var _date = new Date() // 获取今天日期
+        _date.setDate(_date.getDate() - 6)// 日期回到7天前
+        var year = _date.getFullYear()
+        var month = _date.getMonth() + 1
+        var day = _date.getDate()
+        if (month < 10) {
+          month = '0' + month
+        }
+        if (day < 10) {
+          day = '0' + day
+        }
+        var dateTemp = year + '-' + month + '-' + day
+        _date.setDate(_date.getDate() + 7)// 日期重置
+        return dateTemp
+      }
     }
   },
   created() {
+    // console.log(this.fn())
     this.getGoodsTop()
     this.getOrderSize()
     this.getSale()
@@ -188,28 +207,37 @@ export default {
         collectType: 1
       }
       const res = await getLineChart(tse)
-      console.log(res)
       this.mouthList = res.data
-      console.log(res.data, 111111)
+      // console.log(res.data, 111111)
     },
     async changeStyleWeek() {
-      this.cur = 1
-    },
-    async changeStyleMouth() {
       const tse = {
-        start: this.start,
+        start: this.fn(),
         end: this.end,
-        collectType: 2
+        collectType: 1
       }
       const res = await getLineChart(tse)
       console.log(res)
+      this.weekList = res.data
+      this.cur = 1
+    },
+    async changeStyleMouth() {
       this.cur = 2
+      const tse = {
+        start: this.start,
+        end: this.end,
+        collectType: 1
+      }
+      const res = await getLineChart(tse)
+      this.mouthList = res.data
     },
     changeStyleYear() {
       this.cur = 3
     }
   }
+
 }
+
 </script>
 
 <style lang="scss" scoped>
